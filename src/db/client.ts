@@ -1,4 +1,10 @@
 import { drizzle } from 'drizzle-orm/libsql';
-import { tables } from './schema';
+import { users } from './schema/users';
+import { examples } from './schema/examples';
 
-export const db = drizzle(process.env.DB_FILE_NAME!, { schema: tables });
+export const db = drizzle(process.env.DB_FILE_NAME!, {
+  schema: {
+    examples,
+    users,
+  },
+});

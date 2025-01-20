@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
-import { users } from '../db/schema';
+import { users } from '../db/schema/users';
 import { eq } from 'drizzle-orm';
 import { db } from '../db/client';
 import bcrypt from 'bcrypt';

@@ -1,6 +1,6 @@
 import { FastifyInstance } from 'fastify';
 import { db } from '../db/client';
-import { ExampleSchema, examples } from '../db/schema';
+import { ExampleSchema, examples } from '../db/schema/examples';
 import { z } from 'zod';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { getAllResponse } from '../types/responses';
