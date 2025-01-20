@@ -1,0 +1,6 @@
+{
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "drizzle-orm/mysql-core",
+    "drizzle-orm/pg-core"
+  ]
+}
