@@ -1,20 +1,20 @@
 import { db } from '@/db/client';
 import {
-  PortfolioSlice,
-  portfolioSlices as table,
-} from '@/db/schema/portfolioSlices';
+  PortfolioTarget,
+  portfolioTargets as table,
+} from '@/db/schema/portfolioTargets';
 import { and, eq, or } from 'drizzle-orm';
 
-type PortfolioSliceKey = {
+type PortfolioTargetKey = {
   portfolioId: number;
   security: string;
 };
 
-const byKey = (key: PortfolioSliceKey) =>
+const byKey = (key: PortfolioTargetKey) =>
   and(eq(table.portfolioId, key.portfolioId), eq(table.security, key.security));
 
-export class PortfolioSliceService {
-  async updateSlicesTo(
+export class PortfolioTargetService {
+  async updateTargetsTo(
     portfolioId: number,
     target: {
       security: string;
@@ -38,19 +38,26 @@ export class PortfolioSliceService {
     );
 
     // TODO: This could be done in parallel
-    await this.delete(toRemove.map((security) => ({ portfolioId, security })));
-    const createOrUpdates = toAddOrUpdate.map((x) =>
-      this.createOrUpdate({
-        portfolioId,
-        ...x,
-      })
-    );
-    await Promise.all(createOrUpdates);
+    if (toRemove.length) {
+      await this.delete(
+        toRemove.map((security) => ({ portfolioId, security }))
+      );
+    }
+
+    if (toAddOrUpdate) {
+      const createOrUpdates = toAddOrUpdate.map((x) =>
+        this.createOrUpdate({
+          portfolioId,
+          ...x,
+        })
+      );
+      await Promise.all(createOrUpdates);
+    }
 
     return await this.findByPortfolio(portfolioId);
   }
 
-  async createOrUpdate(value: PortfolioSlice) {
+  async createOrUpdate(value: PortfolioTarget) {
     const existing = await this.find({
       portfolioId: value.portfolioId,
       security: value.security,
@@ -65,18 +72,18 @@ export class PortfolioSliceService {
   }
 
   async findByPortfolio(portfolioId: number) {
-    return db.query.portfolioSlices.findMany({
+    return db.query.portfolioTargets.findMany({
       where: eq(table.portfolioId, portfolioId),
     });
   }
 
-  async find(key: PortfolioSliceKey) {
-    return db.query.portfolioSlices.findFirst({
+  async find(key: PortfolioTargetKey) {
+    return db.query.portfolioTargets.findFirst({
       where: byKey(key),
     });
   }
 
-  async delete(keyOrKeys: PortfolioSliceKey | PortfolioSliceKey[]) {
+  async delete(keyOrKeys: PortfolioTargetKey | PortfolioTargetKey[]) {
     if (Array.isArray(keyOrKeys)) {
       return db.delete(table).where(or(...keyOrKeys.map((x) => byKey(x))));
     } else {
@@ -85,4 +92,4 @@ export class PortfolioSliceService {
   }
 }
 
-export const portfolioSliceService = new PortfolioSliceService();
+export const portfolioTargetService = new PortfolioTargetService();

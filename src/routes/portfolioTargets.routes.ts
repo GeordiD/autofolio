@@ -1,12 +1,12 @@
 import { portfolioService } from '@/services/portfolio.service';
-import { portfolioSliceService } from '@/services/portfolioSlice.service';
+import { portfolioTargetService } from '@/services/portfolioTarget.service';
 import { message, messageOnlySchema } from '@/utils/routerSnippets';
 import { FastifyInstance } from 'fastify';
 import { ZodTypeProvider } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 
-export async function portfolioSlicesRoutes(fastify: FastifyInstance) {
-  const url = '/api/portfolios/:portfolioId/slices';
+export async function portfolioTargetRoutes(fastify: FastifyInstance) {
+  const url = '/api/portfolios/:portfolioId/targets';
 
   fastify.withTypeProvider<ZodTypeProvider>().route({
     method: 'PUT',
@@ -43,7 +43,7 @@ export async function portfolioSlicesRoutes(fastify: FastifyInstance) {
           .send(message(`Unable to find portfolio ${portfolioId}.`));
       }
 
-      const result = await portfolioSliceService.updateSlicesTo(
+      const result = await portfolioTargetService.updateTargetsTo(
         portfolioId,
         req.body
       );
@@ -82,7 +82,7 @@ export async function portfolioSlicesRoutes(fastify: FastifyInstance) {
           .send(message(`Unable to find portfolio ${portfolioId}.`));
       }
 
-      const results = await portfolioSliceService.findByPortfolio(portfolioId);
+      const results = await portfolioTargetService.findByPortfolio(portfolioId);
 
       reply.send(results);
     },

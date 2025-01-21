@@ -8,8 +8,8 @@ import {
 import { portfolios } from './portfolios';
 import { InferSelectModel } from 'drizzle-orm';
 
-export const portfolioSlices = sqliteTable(
-  'portfolio_slices',
+export const portfolioTargets = sqliteTable(
+  'portfolio_targets',
   {
     portfolioId: integer()
       .notNull()
@@ -22,4 +22,4 @@ export const portfolioSlices = sqliteTable(
   })
 );
 
-export type PortfolioSlice = InferSelectModel<typeof portfolioSlices>;
+export type PortfolioTarget = InferSelectModel<typeof portfolioTargets>;

@@ -11,7 +11,7 @@ export const portfolios = sqliteTable('portfolios', {
   // TODO
   // Connection to schwab table
   // Connection to account balance type things
-  // Linking point for slices
+  // Linking point for targets
 });
 
 export type Portfolio = InferSelectModel<typeof portfolios>;
