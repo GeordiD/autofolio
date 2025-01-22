@@ -8,6 +8,7 @@ import { z } from 'zod';
 export async function portfolioRoutes(fastify: FastifyInstance) {
   const url = '/api/portfolios';
 
+  // CREATE
   fastify.withTypeProvider<ZodTypeProvider>().route({
     method: 'POST',
     url,
@@ -44,6 +45,33 @@ export async function portfolioRoutes(fastify: FastifyInstance) {
           created: false,
         });
       }
+    },
+  });
+
+  // SYNC
+  fastify.withTypeProvider<ZodTypeProvider>().route({
+    method: 'POST',
+    url: `${url}/:id/sync`,
+    schema: {
+      params: z.object({
+        portfolioId: z.string(),
+      }),
+      // For testing, let's pass in a body to sync
+      // In the real version it should hit the API
+    },
+    handler: async (req, reply) => {
+      const portfolioId = Number(req.params.portfolioId);
+      const isValidPortfolio = await portfolioService.findByPortfolioId(
+        portfolioId
+      );
+
+      if (!isValidPortfolio) {
+        return reply
+          .code(404)
+          .send(message(`Unable to find portfolio ${portfolioId}.`));
+      }
+
+      // TODO, pull positions?
     },
   });
 }

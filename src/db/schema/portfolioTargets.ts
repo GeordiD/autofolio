@@ -17,9 +17,7 @@ export const portfolioTargets = sqliteTable(
     security: text().notNull(),
     percentage: real().notNull().default(0),
   },
-  (table) => ({
-    pk: primaryKey({ columns: [table.portfolioId, table.security] }),
-  })
+  (table) => [primaryKey({ columns: [table.portfolioId, table.security] })]
 );
 
 export type PortfolioTarget = InferSelectModel<typeof portfolioTargets>;

@@ -11,7 +11,6 @@ MVP
   * Execute on approved orders
 * Pull/serve data from account in Schwab to know what current status is
 
-
 - api
   - auth
   - account
@@ -21,9 +20,8 @@ MVP
       - /sync: Sync data with Schwab. This should also re-roll the strategies and queue up any orders based on targets
       - /exec: Run any purchase/sell orders through Schwab
 
-
 DB
 - portfolios
 - portfolioTargets
-- holdings
+- positions
 - orders
