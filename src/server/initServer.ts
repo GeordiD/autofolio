@@ -6,12 +6,17 @@ import {
 import { setupAuth } from './auth';
 import { setupLogger } from './setupLogger';
 import { setupRoutes } from '@/routes/routes';
+import fs from 'fs';
 
 const env =
   process.env.ENVIRONMENT === 'development' ? 'development' : 'production';
 
 const app = Fastify({
   logger: setupLogger(env),
+  https: {
+    key: fs.readFileSync(process.env.SSL_KEY_FILE!),
+    cert: fs.readFileSync(process.env.SSL_CRT_FILE!),
+  },
 });
 
 setupAuth(app);
