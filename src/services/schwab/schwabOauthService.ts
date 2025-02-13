@@ -5,14 +5,16 @@ import { eq } from 'drizzle-orm';
 export class SchwabOauthService {
   private appKey: string;
   private secret: string;
+  private redirectUri: string;
 
   constructor() {
     this.appKey = process.env.SCHWAB_API_KEY ?? '';
     this.secret = process.env.SCHWAB_API_SECRET ?? '';
+    this.redirectUri = process.env.SCHWAB_REDIRECT_URI ?? '';
   }
 
   buildUrl() {
-    const redirectUrl = 'https://127.0.0.1'; ///api/oauth/schwab
+    const redirectUrl = this.redirectUri;
     const url = `https://api.schwabapi.com/v1/oauth/authorize?client_id=${this.appKey}&redirect_uri=${redirectUrl}`;
 
     return url;
@@ -22,7 +24,7 @@ export class SchwabOauthService {
     const payload = new URLSearchParams({
       grant_type: 'authorization_code',
       code,
-      redirect_uri: 'https://127.0.0.1',
+      redirect_uri: this.redirectUri,
     });
 
     const result = await fetch('https://api.schwabapi.com/v1/oauth/token', {
